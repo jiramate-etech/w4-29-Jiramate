@@ -38,7 +38,7 @@ export default function Home(){
             
             {/* Header / Display Card */}
             <View style={myStyles.card}>
-                <Text style={myStyles.label}>Current Fruit:</Text>
+                <Text style={myStyles.label}>Current Fruit 🫐 :</Text>
                 <Text style={myStyles.fruitText}>
                     {fruit ? fruit : "No fruit saved"}
                 </Text>
@@ -50,7 +50,6 @@ export default function Home(){
                 value={text} 
                 onChangeText={setText}
                 placeholder="Enter a fruit name..."
-
             />
 
             {/* Buttons Container */}
@@ -74,7 +73,6 @@ const myStyles = StyleSheet.create({
         flex:1,
         justifyContent:"center",
         alignItems:"center",
-        backgroundColor: '#F5F7FA', // Light grey-blue background for the whole screen
         padding: 20,
     },
     // Card style for the display area
@@ -85,28 +83,19 @@ const myStyles = StyleSheet.create({
         borderRadius: 15,
         alignItems: 'center',
         marginBottom: 30,
-        // Shadow for depth (iOS)
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 3.84,
-        // Shadow for depth (Android)
+        // Shadow for depth
         elevation: 5,
     },
     label: {
         fontSize: 14,
-        color: '#666',
         marginBottom: 5,
         textTransform: 'uppercase',
         letterSpacing: 1,
+        color: 'blue',
     },
     fruitText: {
         fontSize: 32,
         fontWeight: 'bold',
-        color: '#333',
     },
     // Modern input style
     input:{
