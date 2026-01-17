@@ -13,6 +13,7 @@ export default function Home(){
 
     // function save
     async function saveFruit(){
+        if(!text) return; // Simple check to prevent saving empty text
         await AsyncStorage.setItem("fruit", text)
         setFruit(text)
         setText("")
@@ -21,36 +22,51 @@ export default function Home(){
     // function load
     async function loadFruit(){
         const data = await AsyncStorage.getItem("fruit")
-        if(data != ""){
-            setFruit(data!.toString())
+        if(data){
+            setFruit(data)
         }
     }
 
     // function delete
     async function removeFruit(){
         await AsyncStorage.removeItem("fruit")
+        setFruit("") // Update UI immediately after delete
     }
+
     return(
         <View style={myStyles.container}>
-            {/* แสดงสิ่งที่บันทึกไว้ */}
-            <Text>Fruit : {fruit}</Text>
+            
+            {/* Header / Display Card */}
+            <View style={myStyles.card}>
+                <Text style={myStyles.label}>Current Fruit:</Text>
+                <Text style={myStyles.fruitText}>
+                    {fruit ? fruit : "No fruit saved"}
+                </Text>
+            </View>
 
-            {/* สำหรับการรับข้อความ */}
-            <TextInput style={myStyles.input} value={text} onChangeText={setText}/>
+            {/* Input Section */}
+            <TextInput 
+                style={myStyles.input} 
+                value={text} 
+                onChangeText={setText}
+                placeholder="Enter a fruit name..."
 
-            {/* ปุ่มบันทึก */}
-            <TouchableOpacity onPress={saveFruit}>
-                <Text>Save</Text>
-            </TouchableOpacity>
+            />
 
-            {/* ปุ่มลบ */}
-            <TouchableOpacity onPress={removeFruit}>
-                <Text>Delete</Text>
-            </TouchableOpacity>
+            {/* Buttons Container */}
+            <View style={myStyles.buttonContainer}>
+                {/* Save Button */}
+                <TouchableOpacity style={myStyles.saveButton} onPress={saveFruit}>
+                    <Text style={myStyles.buttonText}>Save Fruit</Text>
+                </TouchableOpacity>
 
+                {/* Delete Button */}
+                <TouchableOpacity style={[myStyles.saveButton, myStyles.deleteButton]} onPress={removeFruit}>
+                    <Text style={myStyles.buttonText}>Delete</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
-    
 }
 
 const myStyles = StyleSheet.create({
@@ -58,9 +74,75 @@ const myStyles = StyleSheet.create({
         flex:1,
         justifyContent:"center",
         alignItems:"center",
+        backgroundColor: '#F5F7FA', // Light grey-blue background for the whole screen
+        padding: 20,
     },
+    // Card style for the display area
+    card: {
+        backgroundColor: 'white',
+        width: '100%',
+        padding: 20,
+        borderRadius: 15,
+        alignItems: 'center',
+        marginBottom: 30,
+        // Shadow for depth (iOS)
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 3.84,
+        // Shadow for depth (Android)
+        elevation: 5,
+    },
+    label: {
+        fontSize: 14,
+        color: '#666',
+        marginBottom: 5,
+        textTransform: 'uppercase',
+        letterSpacing: 1,
+    },
+    fruitText: {
+        fontSize: 32,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    // Modern input style
     input:{
-        borderWidth:1,
-        width:"80%",
+        backgroundColor: 'white',
+        width: "100%",
+        padding: 15,
+        borderRadius: 12,
+        fontSize: 16,
+        borderWidth: 1,
+        borderColor: '#E1E1E1',
+        marginBottom: 20,
+    },
+    buttonContainer: {
+        width: '100%',
+        gap: 15, // Adds space between buttons
+    },
+    // Base button style (Blue)
+    saveButton: {
+        backgroundColor: '#4A90E2',
+        padding: 16,
+        borderRadius: 12,
+        alignItems: 'center',
+        shadowColor: "#4A90E2",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+        elevation: 4,
+    },
+    // Override for delete button (Red)
+    deleteButton: {
+        backgroundColor: '#FF5A5F',
+        shadowColor: "#FF5A5F",
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: '600',
     }
 })
